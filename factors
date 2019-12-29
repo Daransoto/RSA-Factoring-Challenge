@@ -22,3 +22,5 @@ with open(sys.argv[1]) as f:
                 print("{}={}*{}".format(to_factor, to_factor // i, i))
                 break
             i += 2
+        if i > end:
+            print("{}={}*{}".format(to_factor, to_factor, 1))
