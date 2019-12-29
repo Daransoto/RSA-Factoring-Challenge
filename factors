@@ -2,25 +2,36 @@
 # RSA factoring challenge
 import sys
 import os
-import math
 if len(sys.argv) != 2:
     print("Usage:", sys.argv[0], "file")
     exit(1)
 if not os.path.isfile(sys.argv[1]):
     print(sys.argv[0]+":", "File", sys.argv[1], "not found.")
     exit(1)
+def rho(n, c):
+    t = 2
+    h = 2
+    d = 1
+
+    while d == 1:
+        t = (t*t + c) % n
+        h = (h*h + c) % n
+        h = (h*h + c) % n
+        d = gcd(t-h, n)
+
+    if d == n:
+        return rho(n, c+1)
+    return d
+def gcd(a,b):
+    if(b==0):
+        return a
+    else:
+        return gcd(b,a%b)
 with open(sys.argv[1]) as f:
     for to_factor in f:
         to_factor = int(to_factor)
         if not to_factor % 2:
             print("{}={}*2".format(to_factor, to_factor // 2))
             continue
-        i = 3
-        end=math.sqrt(to_factor)
-        while i <= end:
-            if not to_factor % i:
-                print("{}={}*{}".format(to_factor, to_factor // i, i))
-                break
-            i += 2
-        if i > end:
-            print("{}={}*{}".format(to_factor, to_factor, 1))
+        mul=rho(to_factor, 1)
+        print("{}={}*{}".format(to_factor, to_factor // mul, mul))
