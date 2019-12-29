@@ -2,22 +2,22 @@
 # RSA factoring challenge
 import sys
 import os
+import math
 if len(sys.argv) != 2:
-	print("Usage:", sys.argv[0], "file")
-	exit(1)
+    print("Usage:", sys.argv[0], "file")
+    exit(1)
 if not os.path.isfile(sys.argv[1]):
-	print(sys.argv[0]+":", "File", sys.argv[1], "not found.")
-	exit(1)
+    print(sys.argv[0]+":", "File", sys.argv[1], "not found.")
+    exit(1)
 with open(sys.argv[1]) as f:
-	for to_factor in f:
-		found = 0
-		with open("primes_million_1") as primes:
-			for line in primes:
-				line_nums = [int(n) for n in line.split()]
-				for prime in line_nums:
-					if int(to_factor) % prime == 0:
-						print("{}={}*{}".format(int(to_factor), int(int(to_factor)/prime), prime))
-						found = 1
-						break
-				if found:
-					break
+    for to_factor in f:
+        to_factor = int(to_factor)
+        if not to_factor % 2:
+            print("{}={}*2".format(to_factor, to_factor // 2))
+        i = 3
+        end=math.sqrt(to_factor)
+        while i <= end:
+            if not to_factor % i:
+                print("{}={}*{}".format(to_factor, to_factor // i, i))
+                break
+            i += 2
